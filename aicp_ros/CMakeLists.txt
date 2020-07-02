@@ -14,10 +14,7 @@ find_package(catkin REQUIRED COMPONENTS aicp_core
                                         std_msgs
                                         sensor_msgs
                                         geometry_msgs
-                                        nav_msgs)
-                        
-#find_package(aicp_core)
-#message("++++++++++++++++++++++ ${aicp_core_LIBRARIES}") # contains all libraries and dependencies declated in catkin_package of aicp_core                                        
+                                        nav_msgs)                                       
 
 catkin_package(
   INCLUDE_DIRS include
@@ -34,17 +31,14 @@ catkin_package(
                  geometry_msgs
                  nav_msgs)
 
-# Add include directories
-include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-)
-
 
 add_library(${PROJECT_NAME} SHARED src/app_ros.cpp
                                    src/visualizer_ros.cpp
                                    src/talker_ros.cpp
                                    src/velodyne_accumulator.cpp)
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} SYSTEM PUBLIC ${catkin_INCLUDE_DIRS}
+                                                          include)
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:include>)
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
 
@@ -69,7 +63,7 @@ target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME}
 #############
 
 ## Mark executables and/or libraries for installation
-install(TARGETS ${PROJECT_NAME} #${PROJECT_NAME}_node
+install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
         ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
         LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
         RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
@@ -79,3 +73,14 @@ install(DIRECTORY include/${PROJECT_NAME}/
         DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
         FILES_MATCHING PATTERN "*.hpp")
 
+## Install other files
+
+INSTALL(DIRECTORY launch
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+catkin_install_python(PROGRAMS 
+                      python/aicp_tf_bridge.py
+                      python/send_fake_pose_correction_ros.py
+                      python/tf_publisher.py
+                      python/aicp_tf_filter.py
+                      python/set_aicp_initial_guess.py
+                      DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
