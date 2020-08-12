@@ -15,9 +15,9 @@ find_package(catkin REQUIRED COMPONENTS aicp_core
                                         sensor_msgs
                                         geometry_msgs
                                         nav_msgs)
-                        
+
 #find_package(aicp_core)
-#message("++++++++++++++++++++++ ${aicp_core_LIBRARIES}") # contains all libraries and dependencies declated in catkin_package of aicp_core                                        
+#message("++++++++++++++++++++++ ${aicp_core_LIBRARIES}") # contains all libraries and dependencies declated in catkin_package of aicp_core
 
 catkin_package(
   INCLUDE_DIRS include
@@ -51,10 +51,10 @@ add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
 
 add_executable(${PROJECT_NAME}_node src/aicp_ros_node.cpp)
 target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME}
-                                           ${catkin_LIBRARIES})                                           
+                                           ${catkin_LIBRARIES})
 
 
-#############                                       
+#############
 # Unit test #
 #############
 #catkin_add_gtest(aicp_test_node test/aicp_test_node.cpp)
@@ -79,3 +79,6 @@ install(DIRECTORY include/${PROJECT_NAME}/
         DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
         FILES_MATCHING PATTERN "*.hpp")
 
+foreach(dir config launch)
+  install(DIRECTORY ${dir} DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+endforeach()
