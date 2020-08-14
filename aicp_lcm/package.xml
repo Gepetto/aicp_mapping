@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>aicp_lcm</name>
-  <version>0.0.1</version>
+  <version>1.0.1</version>
   <description>AICP LCM package</description>
 
   <author email="snobili@robots.ox.ac.uk">Simona Nobili</author>
@@ -10,7 +10,7 @@
   <license>LGPLv2.1</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-  
+
   <build_depend>aicp_core</build_depend>
   <build_depend>aicp_srv</build_depend>
   <build_depend>eigen_conversions</build_depend>
